@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { LEGACY_TASKS_KEY, TASKS_STORAGE_KEY } from '../utils/tasks'
+import { isTaskScheduleInFuture, LEGACY_TASKS_KEY, TASKS_STORAGE_KEY } from '../utils/tasks'
 
 const DEMO_TASK_IDS = new Set(['task-1', 'task-2', 'task-3', 'task-4', 'task-5'])
 
@@ -38,7 +38,9 @@ export const useTaskStore = create(persist(
     saveTask: (form) => {
       const { dialogTaskId, tasks } = get()
       const title = form.title.trim()
-      if (!title) return
+      const existingTask = tasks.find((task) => task.id === dialogTaskId)
+      const preservesExistingSchedule = existingTask && form.date === existingTask.date && form.time === existingTask.time
+      if (!title || (!preservesExistingSchedule && !isTaskScheduleInFuture(form.date, form.time))) return
 
       if (dialogTaskId === 'new') {
         set({ tasks: [...tasks, { ...form, title, id: crypto.randomUUID(), completed: false }], dialogTaskId: null })

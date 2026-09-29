@@ -3,14 +3,32 @@ export const TASKS_STORAGE_KEY = 'daymark.tasks.v2'
 
 export const getDateKey = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 
-export const createEmptyTaskForm = () => ({
-  title: '',
-  description: '',
-  date: getDateKey(new Date()),
-  time: '09:00',
-  priority: 'Medium',
-  category: 'Work',
-})
+export const getMinimumTaskDateTime = (now = new Date()) => {
+  const minimum = new Date(now.getTime() + 60_000)
+  minimum.setSeconds(0, 0)
+  return {
+    date: getDateKey(minimum),
+    time: `${String(minimum.getHours()).padStart(2, '0')}:${String(minimum.getMinutes()).padStart(2, '0')}`,
+  }
+}
+
+export const isTaskScheduleInFuture = (date, time, now = new Date()) => {
+  const scheduledAt = new Date(`${date}T${time}:00`)
+  return !Number.isNaN(scheduledAt.getTime()) && scheduledAt > now
+}
+
+export const createEmptyTaskForm = () => {
+  const now = new Date()
+  const minimum = getMinimumTaskDateTime(now)
+  return {
+    title: '',
+    description: '',
+    date: minimum.date,
+    time: isTaskScheduleInFuture(minimum.date, '09:00', now) ? '09:00' : minimum.time,
+    priority: 'Medium',
+    category: 'Work',
+  }
+}
 
 export const formatLongDate = (date) => new Intl.DateTimeFormat('en', {
   weekday: 'long',

@@ -13,7 +13,7 @@ export function TaskSummary() {
       <div className="summary-block"><span className="summary-label">Completed</span><strong>{completedCount.toString().padStart(2, '0')}</strong><span className="summary-caption">nice work so far</span></div>
       <div className="summary-progress">
         <div className="progress-copy"><span>Overall progress</span><strong>{progress}%</strong></div>
-        <div className="progress-track"><span style={{ width: `${progress}%` }} /></div>
+        <div className="progress-track" role="progressbar" aria-label="Overall progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress} style={{ '--progress': `${progress}%` }}><span style={{ width: `${progress}%` }} /></div>
       </div>
     </section>
   )

@@ -140,6 +140,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .text-input::placeholder { color: #aab1ab; }
 .notes-input { min-height: 75px; resize: vertical; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px 12px; }
+.schedule-error { margin: -5px 0 0; color: #b42318; font-size: 12px; }
 .modal-footer { padding-top: 6px; display: flex; justify-content: flex-end; gap: 8px; }
 .cancel-button { min-height: 40px; padding: 0 13px; color: #6f7b71; background: white; border: 1px solid #e2e8e1; border-radius: 5px; font-size: 13px; cursor: pointer; }
 .cancel-button:hover { background: #f6f8f5; }
@@ -204,8 +205,14 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
   .summary-block { min-width: 66px; gap: 2px 5px; }
   .summary-block strong { font-size: 20px; }
   .summary-caption { font-size: 9px; }
-  .summary-progress { width: 27%; }
+  .summary-progress { position: relative; width: 76px; height: 65px; flex: 0 0 76px; margin-left: auto; }
   .progress-copy { font-size: 10px; }
+  .progress-copy { position: absolute; top: 0; left: 50%; width: max-content; margin: 0; transform: translateX(-50%); }
+  .progress-copy strong { display: none; }
+  .progress-track { position: absolute; bottom: 0; left: 50%; width: 48px; height: 48px; display: grid; place-items: center; transform: translateX(-50%); border-radius: 50%; background: conic-gradient(#789f7f var(--progress), #edf0ec 0); }
+  .progress-track::before { z-index: 1; color: #3d664f; content: attr(aria-valuenow) '%'; font-size: 12px; font-weight: 700; }
+  .progress-track::after { position: absolute; inset: 5px; background: #fff; border-radius: 50%; content: ''; }
+  .progress-track span { display: none; }
   .task-toolbar { margin-top: 19px; }
   .task-row { grid-template-columns: 24px minmax(0, 1fr) auto 24px; gap: 7px; padding-block: 14px; }
   .task-schedule { grid-column: 3; grid-row: 1; min-width: 55px; }
@@ -228,7 +235,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
   .summary-block { min-width: 0; flex: 0 1 66px; gap: 2px 4px; }
   .summary-label { font-size: 11px; }
   .summary-caption { font-size: 9px; }
-  .summary-progress { width: auto; min-width: 72px; flex: 1; }
+  .summary-progress { width: 76px; min-width: 76px; flex: 0 0 76px; }
   .progress-copy { gap: 3px; font-size: 9px; }
   .intro-copy h1 { font-size: 27px; }
   .task-row { grid-template-columns: 22px minmax(0, 1fr) 52px 23px; gap: 5px; }
